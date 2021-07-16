@@ -1,20 +1,17 @@
 from rest_framework import serializers
 from .models import Product
-from .validators import ProductTaxValidation
 
 
 class ProductSerializerEditor(serializers.ModelSerializer):
 
-    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    tax = serializers.IntegerField()
-    
+    def validate(self, data):
+        if data['procurement_price'] < 0 or data['tax'] < 0:
+            raise serializers.ValidationError("numbers must be positive")
+        return data
+   
     class Meta:
         model = Product
         fields = ["id", "name", "procurement_price", "tax"]
-        read_only_fields = ["name", "procurement_price"]
-        validators = [
-            ProductTaxValidation(),
-        ]
 
 
 class ProductSerializerViewer(serializers.ModelSerializer):

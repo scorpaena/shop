@@ -1,45 +1,39 @@
 from django.contrib import admin
-from django.contrib.admin.helpers import ActionForm
-from django import forms
+from django.db.models import F
 from .models import Product
-
-class TaxForAllForm(ActionForm):
-    tax_for_all = forms.IntegerField(required=False)
-    extra_charge_for_all = forms.IntegerField(required=False)
-    risk_for_all = forms.IntegerField(required=False)
+from .forms import ApplyForAllForm
+from django.contrib import messages
 
 
 class ProductAdmin(admin.ModelAdmin):
     
-    # @admin.action
-    def apply_tax_for_all(modeladmin, request, queryset):
-        tax_for_all = int(request.POST['tax_for_all'])
-        tax_queryset = queryset.values_list('tax', flat=True)
-        for tax in tax_queryset:
-            tax += tax_for_all
-            # tax.save()
-        # queryset.update(tax=tax_queryset+tax_for_all)
-    
-    # @admin.action
-    def apply_extra_charge_for_all(modeladmin, request, queryset):
-        queryset.update(sticker_price=sticker_price*(1+extra_charge_for_all/100))
+    def apply_extra_parameters(modeladmin, request, queryset):
+        try:
+            tax_for_all = int(request.POST['tax_for_all'])
+            extra_charge_for_all = int(request.POST['extra_charge_for_all'])
+            risk_for_all = int(request.POST['risk_for_all'])
+        except ValueError:
+            return messages.add_message(
+                request, messages.ERROR, 'values must be positive integers'
+            )
+        else:
+            if tax_for_all<0 or extra_charge_for_all<0 or risk_for_all<0 or risk_for_all>=100:
+                return messages.add_message(
+                    request, messages.ERROR, 
+                    'values must be positive and "risk_for_all" must be < 100'
+                )
+            else:
+                queryset.update(tax=F('tax')+tax_for_all)
+                queryset.update(
+                    extra_charge=F('extra_charge')*round((1/(1-risk_for_all/100)))
+                    +extra_charge_for_all
+                )
 
-    # @admin.action
-    def apply_risk_for_all(modeladmin, request, queryset):
-        queryset.update(sticker_price=sticker_price*(1+risk_for_all/100))
 
-
-    action_form = TaxForAllForm
-    actions = [apply_tax_for_all, apply_extra_charge_for_all, apply_risk_for_all]
+    action_form = ApplyForAllForm
+    actions = [apply_extra_parameters,]
     fields = ('name', 'procurement_price', 'tax', 'extra_charge', 'sticker_price', 'item_margin',)
     readonly_fields = ('sticker_price', 'item_margin',)
     list_display = ('name', 'procurement_price', 'tax', 'extra_charge', 'sticker_price', 'item_margin',)
-    # list_filter = ('author', 'title', 'content', 'date_posted')
-    # search_fields = ('author__nickname', 'title', 'content', 'date_posted')
-    # ordering = ('-date_posted',)
-
-
-
-
 
 admin.site.register(Product, ProductAdmin)
