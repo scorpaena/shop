@@ -30,10 +30,11 @@ INSTALLED_APPS = [
     'product',
 ]
 
-# CONSTANCE_CONFIG = {
-#     'THE_ANSWER': (42, 'Answer to the Ultimate Question of Life, '
-#                        'The Universe, and Everything'),
-# }
+CONSTANCE_CONFIG = {
+    'RISK': (10, '', int),
+    'TAX': (10, '', int),
+    'EXTRA_CHARGE': (10, '', int),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
