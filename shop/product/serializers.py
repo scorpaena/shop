@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from .models import Product
+from .validators import validate_field_value
 
 
 class ProductSerializerEditor(serializers.ModelSerializer):
 
     def validate(self, data):
-        if data['procurement_price'] < 0 or data['tax'] < 0:
-            raise serializers.ValidationError("numbers must be positive")
-        return data
+        validate_field_value(data, field='procurement_price')
+        validate_field_value(data, field='tax')
+        return super().validate(data)
    
     class Meta:
         model = Product

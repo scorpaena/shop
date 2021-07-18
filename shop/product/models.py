@@ -1,4 +1,3 @@
-from shop import settings
 from django.db import models
 from constance import config
 
