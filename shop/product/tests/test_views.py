@@ -1,14 +1,21 @@
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from product.models import Product
 
 @pytest.fixture
-def user(db):
-    return User.objects.create_user(
+def group(db):
+    return Group.objects.create(name='editors')
+
+@pytest.fixture
+def user(db, group):
+    user = User.objects.create_user(
         username = 'foo',
         password = 'bar123$%',
     )
+    user.groups.add(group)
+    return user
 
 @pytest.fixture
 def product(db):

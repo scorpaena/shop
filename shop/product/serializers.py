@@ -1,14 +1,15 @@
 from rest_framework import serializers
 from .models import Product
-from .validators import validate_field_value
 
 
 class ProductEditorSerializer(serializers.ModelSerializer):
 
-    def validate(self, data):
-        validate_field_value(data, field='procurement_price')
-        validate_field_value(data, field='tax')
-        return super().validate(data)
+    procurement_price = serializers.DecimalField(
+        max_digits=6, decimal_places=1, min_value=0, default=1.0
+    )
+    tax = serializers.DecimalField(
+        max_digits=2, decimal_places=1, min_value=0, default=None
+    )
    
     class Meta:
         model = Product
@@ -20,3 +21,4 @@ class ProductViewerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ["id", "name", "sticker_price"]
+        read_only_fields = ["id", "name", "sticker_price"]

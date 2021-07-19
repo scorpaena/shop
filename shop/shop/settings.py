@@ -17,6 +17,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='not_secret_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
+# ALLOWED_HOSTS = []
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
     'constance',
     'rest_framework',
     'product',
+    'user',
 ]
 
 CONSTANCE_CONFIG = {
