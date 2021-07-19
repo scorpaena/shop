@@ -3,3 +3,6 @@ djangorestframework==3.12.4
 pytest==6.2.4
 pytest-django==4.4.0
 django-constance==2.8.0
+python-dotenv==0.18.0
+psycopg2==2.9.1
+psycopg2-binary==2.9.1
