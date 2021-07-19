@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Product
-from .serializers import ProductSerializerEditor, ProductSerializerViewer
+from .serializers import ProductEditorSerializer, ProductViewerSerializer
 
 
 class ProductListCreateView(generics.ListCreateAPIView):
@@ -10,10 +10,10 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
     def get_serializer_class(self):
         if self.request.user.is_authenticated:
-            return ProductSerializerEditor
-        return ProductSerializerViewer
+            return ProductEditorSerializer
+        return ProductViewerSerializer
 
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializerEditor
+    serializer_class = ProductEditorSerializer

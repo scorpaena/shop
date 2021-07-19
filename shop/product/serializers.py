@@ -3,7 +3,7 @@ from .models import Product
 from .validators import validate_field_value
 
 
-class ProductSerializerEditor(serializers.ModelSerializer):
+class ProductEditorSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         validate_field_value(data, field='procurement_price')
@@ -15,7 +15,7 @@ class ProductSerializerEditor(serializers.ModelSerializer):
         fields = ["id", "name", "procurement_price", "tax"]
 
 
-class ProductSerializerViewer(serializers.ModelSerializer):
+class ProductViewerSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = Product
