@@ -5,26 +5,27 @@ from .models import Product
 class ProductAdmin(admin.ModelAdmin):
 
     fields = (
-        'name', 
-        'procurement_price', 
-        'extra_charge', 
-        'tax', 
-        'risk', 
-        'sticker_price', 
-        'item_margin',
+        "name",
+        "procurement_price",
+        "extra_charge",
+        "tax",
+        "risk",
+        "sticker_price",
+        "item_margin",
     )
     readonly_fields = (
-        'sticker_price', 
-        'item_margin',
+        "sticker_price",
+        "item_margin",
     )
     list_display = (
-        'name', 
-        'procurement_price', 
-        'extra_charge', 
-        'tax', 
-        'risk', 
-        'sticker_price', 
-        'item_margin',
+        "name",
+        "procurement_price",
+        "extra_charge",
+        "tax",
+        "risk",
+        "sticker_price",
+        "item_margin",
     )
+
 
 admin.site.register(Product, ProductAdmin)
