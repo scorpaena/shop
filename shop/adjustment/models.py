@@ -9,6 +9,6 @@ class Adjustment(models.Model):
         max_digits=7, decimal_places=1, default=1.0
     )
     extra_charge = models.DecimalField(
-        max_digits=4, decimal_places=1, blank=True, null=True
+        max_digits=4, decimal_places=1
     )
-    risk = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
+    risk = models.DecimalField(max_digits=3, decimal_places=1)
